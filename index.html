@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Carlina — Diseño de arte floral</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="img/logo.png" />
+  <style>
+    :root{
+      --accent:#C84B4B;
+      --muted:#6b6b6b;
+      --bg:#fff8f6;
+      --card:#ffffffcc;
+      --glass: rgba(255,255,255,0.7);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:#222;
+      background:var(--bg);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+    /* Carousel styles for "Qué hacemos" */
+    .carousel{
+      position:relative;
+      margin:22px 0;
+      border-radius:12px;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.03));
+      box-shadow:0 10px 30px rgba(0,0,0,0.06);
+    }
+    .carousel .track{
+      display:flex;
+      transition:transform .45s ease;
+      will-change:transform;
+    }
+    .carousel .slide{
+      min-width:100%;
+      flex:0 0 100%;
+      display:block;
+    }
+    .carousel img{ width:100%; height:200px; object-fit:cover; display:block; }
+    .carousel .carousel-btn{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      background:rgba(255,255,255,0.85);
+      border:0;
+      width:32px;
+      height:32px;
+      border-radius:6px;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      box-shadow:0 6px 18px rgba(0,0,0,0.08);
+      color:var(--accent);
+    }
+    .carousel .carousel-btn.prev{ left:12px; }
+    .carousel .carousel-btn.next{ right:12px; }
+    .carousel .dots{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:8px;
+      gap:6px;
+      display:flex;
+      gap:8px;
+    }
+    .carousel .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.6);
+      cursor:pointer;
+      border:1px solid rgba(0,0,0,0.04);
+    }
+    .carousel .dot.active{ background:var(--accent); box-shadow:0 4px 10px rgba(200,75,75,0.18); }
+
+    /* Smaller carousels used inside each feature (ramos / centros / coronas) */
+    .feature-carousel{
+      margin-top:12px;
+      border-radius:8px;
+      overflow:hidden;
+      position:relative;
+      background:transparent;
+      box-shadow:none;
+    }
+    .feature-carousel .track{ display:flex; transition:transform .35s ease; }
+    .feature-carousel .slide{ min-width:100%; flex:0 0 100%; }
+    .feature-carousel img{ width:100%; height:140px; object-fit:cover; border-radius:6px; display:block; }
+    .feature-carousel .carousel-btn{ width:32px; height:32px; background:rgba(255,255,255,0.9); }
+    .feature-carousel .dots{ bottom:8px; gap:6px; }
+    .feature-carousel .dot{ width:8px; height:8px; }
+
+    /* NAV */
+    header{
+      position:fixed;
+      left:0;right:0;top:0;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px 24px;
+      z-index:40;
+      background:linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.25));
+      backdrop-filter: blur(6px);
+      border-bottom:1px solid rgba(0,0,0,0.04);
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      font-family:"Playfair Display", serif;
+      font-weight:700;
+      font-size:20px;
+      color:#2b2b2b;
+    }
+    .brand img{
+      width:44px;
+      height:44px;
+      object-fit:contain;
+      border-radius:8px;
+      display:block;
+    }
+    nav a{
+      margin-left:18px;
+      color:#333;
+      text-decoration:none;
+      font-weight:600;
+      font-size:14px;
+    }
+
+    /* HERO / MAIN background */
+    .hero{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:0 20px;
+      background-image:
+        linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.06)),
+        url('img/background.jpg');
+      background-size:cover;
+      background-position:center;
+      color:#fff;
+      text-align:center;
+      position:relative;
+    }
+    .hero-inner{
+      max-width:980px;
+      padding:48px;
+      border-radius:12px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    }
+    .hero h1{
+      margin:0 0 10px;
+      font-family:"Playfair Display", serif;
+      font-size:44px;
+      letter-spacing:0.2px;
+    }
+    .hero p{ margin:0 0 18px; opacity:0.95; font-size:18px; color: #fff9; }
+    .hero .cta{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      background:var(--accent);
+      color:#fff;
+      border:none;
+      padding:12px 18px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:700;
+      text-decoration:none;
+      box-shadow: 0 8px 20px rgba(200,75,75,0.18);
+    }
+
+    /* SECTIONS */
+    main{ padding-top:84px; } /* for fixed header */
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+      padding:56px 20px;
+    }
+/* What Carlina Does */
+    .features{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:18px;
+    }
+    .feature{
+      background:var(--glass);
+      border-radius:12px;
+      padding:18px;
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+    }
+    .feature .icon{
+      width:56px;
+      height:56px;
+      border-radius:10px;
+      background:white;
+      display:grid;
+      place-items:center;
+      font-size:20px;
+      color:var(--accent);
+      flex-shrink:0;
+    }
+    .muted{ color:var(--muted); font-size:14px; }
+    /* Best Sellers */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:18px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:12px;
+      padding:14px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.06);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .card img{
+      width:100%;
+      height:170px;
+      object-fit:cover;
+      border-radius:8px;
+    }
+    .card h3{ margin:0; font-size:18px; }
+    .price{ color:var(--accent); font-weight:700; }
+    .card .actions{ margin-top:auto; display:flex; gap:8px; }
+    .btn{
+      padding:8px 10px;
+      border-radius:8px;
+      border:1px solid rgba(0,0,0,0.06);
+      background:transparent;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .btn.primary{
+      background:var(--accent);
+      color:white;
+      border:none;
+    }
+
+    footer{
+      padding:28px 20px;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+    /* Lightbox / enlarge image for Best Sellers */
+    .lightbox{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.8);
+      align-items:center;
+      justify-content:center;
+      z-index:120;
+      padding:20px;
+    }
+    .lightbox.open{ display:flex; }
+    .lightbox-content{
+      max-width:1100px;
+      width:100%;
+      max-height:90vh;
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:12px;
+      align-items:center;
+    }
+    .lightbox img{
+      width:100%;
+      height:auto;
+      max-height:90vh;
+      object-fit:contain;
+      border-radius:8px;
+      background:#111;
+    }
+    .lightbox .controls{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .lightbox button{
+      background:rgba(255,255,255,0.08);
+      color:white;
+      border:1px solid rgba(255,255,255,0.06);
+      padding:8px 10px;
+      border-radius:8px;
+      cursor:pointer;
+    }
+    .lightbox .close{
+      background:transparent;
+      border:none;
+      font-size:28px;
+      line-height:1;
+      color:#fff;
+    }
+
+    /* Social icons in footer */
+    .social{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      margin-top:8px;
+    }
+    .social a{
+      display:inline-grid;
+      place-items:center;
+      width:38px;
+      height:38px;
+      border-radius:8px;
+      background:rgba(0,0,0,0.04);
+      color:var(--accent);
+      text-decoration:none;
+    }
+    .social svg{ width:18px; height:18px; fill:currentColor; }
+
+    /* WhatsApp contact icon styling (classic logo) */
+    .contact-whatsapp{ display:inline-grid; place-items:center; width:36px; height:36px; border-radius:8px; text-decoration:none; }
+    .contact-whatsapp svg{ width:22px; height:22px; display:block; }
+    /* Email contact icon styling */
+    .contact-email{ display:inline-grid; place-items:center; width:36px; height:36px; border-radius:8px; text-decoration:none; color:var(--accent); }
+    .contact-email svg{ width:20px; height:20px; display:block; }
+    /* telephone text next to whatsapp */
+    .contact-number{
+      font-weight:600;
+      color:var(--muted);
+      margin-left:6px;
+      text-decoration:none;
+    }
+
+    /* Header contact links (elegant mini actions) */
+    .header-contacts{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .contact-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:6px 10px;
+      border-radius:10px;
+      background:rgba(255,255,255,0.06);
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:600;
+      font-size:13px;
+      transition:all .14s ease;
+      border:1px solid rgba(0,0,0,0.04);
+      backdrop-filter: blur(4px);
+    }
+    .contact-link:hover{
+      transform:translateY(-3px);
+      color:var(--accent);
+      box-shadow:0 8px 18px rgba(200,75,75,0.08);
+    }
+    .contact-link svg{ width:18px; height:18px; display:block; flex-shrink:0; }
+    /* compact: show only icons on small screens */
+    .contact-label{ display:inline-block; }
+    @media (max-width:720px){
+      nav{ display:none; } /* keep header minimal — show nav via hamburger later if desired */
+      .contact-label{ display:none; }
+      .brand img{ width:40px; height:40px; }
+      .contact-link{ padding:8px; border-radius:9px; }
+    }
+
+    @media (max-width:640px){
+      .hero h1{ font-size:28px; }
+      header{ padding:10px 14px }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="display:flex;align-items:center;gap:18px;width:100%;justify-content:space-between;">
+      <div class="brand" style="display:flex;align-items:center;gap:12px">
+        <img src="img/logo.png" alt="Logo de Carlina">
+        <div style="line-height:1">
+          <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:20px;color:#2b2b2b">Carlina</div>
+          <div style="font-size:12px;margin-top:2px;color:var(--muted);font-weight:600">Diseño de Arte Floral</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:18px;">
+        <nav>
+          <a href="#what-we-do">Qué hacemos</a>
+          <a href="#best-sellers">Más vendidos</a>
+          <a href="#haz-tu-pedido">Haz tu pedido</a>
+        </nav>
+
+        
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Carlina hero">
+      <div class="hero-inner">
+        <h1>Eternas con tus recuerdos</h1>
+        <p>Composiciones con flores preservadas y secas, con identidad.</p>
+        <div style="display:flex;gap:10px;justify-content:center;">
+          
+          <a class="btn" href="#what-we-do" style="background:rgba(255,255,255,0.12);color:#fff;border:none;font-weight:700;padding:12px 14px;border-radius:8px;text-decoration:none">Más información</a>
+        </div>
+      </div>
+    </section>
+
+     <section id="what-we-do" class="container" aria-labelledby="what-we-do-heading" style="padding-top:10px;">
+      <h2 id="what-we-do-heading" style="font-family:'Playfair Display',serif;font-size:28px;margin-bottom:6px">Qué hacemos</h2>
+      <p class="muted">Carlina crea obras de arte florales de temporada, arregladas a mano. Cada pieza combina formas clásicas con paletas de colores modernas para lograr una expresión atemporal.</p>
+
+      <div class="features" style="margin-top:18px">
+        <div class="feature" id="ramos">
+          <div class="icon">💐</div>
+          <div>
+            <h4 style="margin:0 0 6px">Ramos personalizados</h4>
+            <div class="muted">Diseñamos ramos a tu gusto, para que cada flor hable por ti.</div>
+          </div>
+        </div>
+        <!-- Carousel for ramos: images in img/ramos/1.jpg, 2.jpg, 3.jpg -->
+        <div class="carousel" aria-label="Galería ramos">
+          <div class="track">
+            <div class="slide"><img src="img/ramos/1.jpg" alt="Ramo 1"></div>
+            <div class="slide"><img src="img/ramos/2.jpg" alt="Ramo 2"></div>
+          </div>
+          <button class="carousel-btn prev" aria-label="Anterior">‹</button>
+          <button class="carousel-btn next" aria-label="Siguiente">›</button>
+          <div class="dots" aria-label="Indicadores ramos">
+            <button class="dot active" aria-label="Diapositiva 1"></button>
+            <button class="dot" aria-label="Diapositiva 2"></button>
+          </div>
+        </div>
+
+        <div class="feature" id="centros">
+          <div class="icon">🏵️</div>
+          <div>
+            <h4 style="margin:0 0 6px">Centros</h4>
+            <div class="muted">Con color y armonía, son el corazón vivo de cualquier espacio.</div>
+          </div>
+        </div>
+        <!-- Carousel for centros: images in img/centros/1.jpg, 2.jpg, 3.jpg -->
+        <div class="carousel" aria-label="Galería centros">
+          <div class="track">
+            <div class="slide"><img src="img/centros/1.jpg" alt="Centro 1"></div>
+            <div class="slide"><img src="img/centros/2.jpg" alt="Centro 2"></div>
+            <div class="slide"><img src="img/centros/3.jpg" alt="Centro 3"></div>
+            <div class="slide"><img src="img/centros/4.jpg" alt="Centro 4"></div>
+          </div>
+          <button class="carousel-btn prev" aria-label="Anterior">‹</button>
+          <button class="carousel-btn next" aria-label="Siguiente">›</button>
+          <div class="dots" aria-label="Indicadores centros">
+            <button class="dot active" aria-label="Diapositiva 1"></button>
+            <button class="dot" aria-label="Diapositiva 2"></button>
+            <button class="dot" aria-label="Diapositiva 3"></button>
+            <button class="dot" aria-label="Diapositiva 4"></button>
+          </div>
+        </div>
+
+        <div class="feature" id="coronas">
+          <div class="icon">🌺</div>
+          <div>
+            <h4 style="margin:0 0 6px">Coronas</h4>
+            <div class="muted">Piezas únicas que combinan flores frescas, texturas naturales y una composición equilibrada.</div>
+          </div>
+        </div>
+        <!-- Carousel for coronas: images in img/coronas/1.jpg, 2.jpg, 3.jpg -->
+        <div class="carousel" aria-label="Galería coronas">
+          <div class="track">
+            <div class="slide"><img src="img/coronas/1.jpg" alt="Corona 1"></div>
+            <div class="slide"><img src="img/coronas/2.jpg" alt="Corona 2"></div>
+            <div class="slide"><img src="img/coronas/3.jpg" alt="Corona 3"></div>
+          </div>
+          <button class="carousel-btn prev" aria-label="Anterior">‹</button>
+          <button class="carousel-btn next" aria-label="Siguiente">›</button>
+          <div class="dots" aria-label="Indicadores coronas">
+            <button class="dot active" aria-label="Diapositiva 1"></button>
+            <button class="dot" aria-label="Diapositiva 2"></button>
+            <button class="dot" aria-label="Diapositiva 3"></button>
+          </div>
+        </div>
+        <div class="feature" id="especiales">
+          <div class="icon">🎁</div>
+          <div>
+            <h4 style="margin:0 0 6px">Especiales</h4>
+            <div class="muted">Cada regalo cuenta una historia… ¿cuál quieres contar tú?</div>
+          </div>
+        </div>
+        <!-- Carousel for coronas: images in img/coronas/1.jpg, 2.jpg, 3.jpg -->
+        <div class="carousel" aria-label="Galería especiales">
+          <div class="track">
+            <div class="slide"><img src="img/especiales/1.jpg" alt="Corona 1"></div>
+            <div class="slide"><img src="img/especiales/2.jpg" alt="Corona 2"></div>
+            <div class="slide"><img src="img/especiales/3.jpg" alt="Corona 3"></div>
+          </div>
+          <button class="carousel-btn prev" aria-label="Anterior">‹</button>
+          <button class="carousel-btn next" aria-label="Siguiente">›</button>
+          <div class="dots" aria-label="Indicadores especiales">
+            <button class="dot active" aria-label="Diapositiva 1"></button>
+            <button class="dot" aria-label="Diapositiva 2"></button>
+            <button class="dot" aria-label="Diapositiva 3"></button>
+          </div>
+        </div>
+      </div>
+
+     
+    </section>
+    <section id="best-sellers" class="container" aria-labelledby="best-sellers-heading">
+      <h2 id="best-sellers-heading" style="margin-top:0;font-family:'Playfair Display',serif;font-size:28px">Más vendidos</h2>
+      <p class="muted" style="margin-top:6px">Arreglos populares seleccionados por Carlina. Consulta disponibilidad por mensaje o instagram.</p>
+
+      <div class="grid" style="margin-top:18px">
+        <article class="card" aria-label="Caja otoñal">
+          <img src="img/mas-vendidos-1.jpg" alt="Caja otoñal">
+          <h3>Caja otoñal </h3>
+          <div class="muted">Acoge el otoño en tu hogar con colores que evocan su calidez y melancolía</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div class="price">50 Euros</div>
+          </div>
+        </article>
+
+        <article class="card" aria-label="Portaretratos">
+          <img src="img/mas-vendidos-2.jpg" alt="Portaretratos">
+          <h3>Portaretratos</h3>
+          <div class="muted">Regala algo más que una foto.</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div class="price">20 Euros</div>
+            
+          </div>
+        </article>
+
+        <article class="card" aria-label="Corona navideña">
+          <img src="img/mas-vendidos-3.jpg" alt="Corona navideña">
+          <h3>Corona navideña</h3>
+          <div class="muted">Decora tu casa con elegancia y personalidad para estas navidades</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div class="price">30 Euros</div>
+            
+          </div>
+        </article>
+      </div>
+    </section>
+
+   
+
+    <section id="haz-tu-pedido" class="container" style="padding-bottom:34px;">
+      <h2 id="haz-tu-pedido-heading" style="margin-top:0;font-family:'Playfair Display',serif;font-size:28px">Haz tu pedido</h2>
+      <p class="muted" style="margin-top:6px">Trabajamos en Pamplona y su comarca. Envianos un mensaje por whatsapp o mandanos un correo electrónico y nos pondremos en contacto contigo.</p>
+      <p class="muted" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <a class="contact-email" href="mailto:hello@carlina.studio" aria-label="Enviar correo a Carlina">
+          <!-- Classic envelope icon -->
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="img">
+            <path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+        </a>
+        <a href="mailto:hello@carlina.studio">hello@carlina.studio</a>
+        <span>•</span>
+        <!-- replace number in wa.me with Carlina's international number, no plus or spaces -->
+        <a class="contact-whatsapp" href="https://wa.me/15551234567" target="_blank" rel="noopener noreferrer" aria-label="Enviar mensaje por WhatsApp">
+          <!-- Classic WhatsApp speech-bubble + phone icon -->
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="img">
+            <path fill="currentColor" d="M12 .5A11.5 11.5 0 1 0 23.5 12 11.513 11.513 0 0 0 12 .5zm5.4 16.3c-.3.9-1.6 1.7-2.2 1.8-.6.1-1.1.1-2.3-.3-3.4-1.3-6.1-4.9-6.3-5.1-.2-.2-1.5-1.9-1.5-3.5 0-1.6.8-2.4 1.1-2.7.3-.3.9-.3 1.3-.3.4 0 .9 0 1.3 0 .4 0 .8-.2 1.2.6.4.8 1.4 3.1 1.5 3.3.1.2.1.6-.2.9-.3.3-.6.6-.9.9-.3.3-.6.6-.3 1.2.3.6 1.4 2.3 3.3 3.6 1.3.9 2.2 1 2.8 1 .5 0 1.4-.4 1.7-1.1.3-.7.3-1.2.2-1.3-.1-.1-.4-.2-.8-.4z"/>
+            <path fill="#fff" d="M15.1 14.1c-.2-.1-.5 0-.9.3-.4.3-.7.8-.9 1-.1.2-.3.3-.5.2-.9-.3-1.7-1.1-2.2-1.8-.2-.3-.4-.4-.6-.3-.2.1-.7.5-1.1.9-.4.4-.5.8-.3 1.1.7 1.3 1.8 2.6 3 3.4 1.3.9 2.6 1.3 3.5 1 1-.3 1.8-1.1 2.1-2 .3-.9.2-1.1.1-1.2-.1-.1-.4-.2-.8-.4z"/>
+          </svg>
+        </a>
+        <!-- clickable telephone next to icon (display formatted, link uses +15551234567) -->
+        <a class="contact-number" href="tel:+15551234567" aria-label="Llamar a Carlina">+1 555 123 4567</a>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    © Carlina Arte Floral. Sígue nuestras historias en Instagram @carlina.studio
+
+    <div class="social" aria-label="Sigue a Carlina en redes sociales">
+      <a href="https://www.instagram.com/carlina.studio" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Carlina">
+        <!-- Instagram SVG -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 2.5a2.5 2.5 0 1 0 .001 5.001A2.5 2.5 0 0 0 12 7.5zM18.5 6a.75.75 0 1 1 0 1.5A.75.75 0 0 1 18.5 6z"/>
+        </svg>
+      </a>
+
+      <a href="https://www.facebook.com/carlina.studio" target="_blank" rel="noopener noreferrer" aria-label="Facebook de Carlina">
+        <!-- Facebook SVG -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2.2v-2.9h2.2V9.1c0-2.2 1.3-3.4 3.3-3.4.95 0 1.95.17 1.95.17v2.1h-1.07c-1.06 0-1.39.66-1.39 1.34v1.6h2.36l-.38 2.9h-1.98v7A10 10 0 0 0 22 12z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Lightbox for best-seller images -->
+  <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Imagen ampliada">
+    <div class="lightbox-content" role="document">
+      <img id="lightbox-img" src="" alt="">
+      <div class="controls" aria-hidden="false">
+        <button id="lightbox-prev" aria-label="Anterior">‹</button>
+        <button id="lightbox-next" aria-label="Siguiente">›</button>
+        <button id="lightbox-close" class="close" aria-label="Cerrar">✕</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Smooth scrolling for in-page links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const target = document.querySelector(a.getAttribute('href'));
+        if(target){
+          e.preventDefault();
+          target.scrollIntoView({behavior:'smooth',block:'start'});
+        }
+      });
+    });
+    
+    // Lightbox: enlarge best-seller photos
+    (function(){
+      const lightbox = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lightbox-img');
+      const btnClose = document.getElementById('lightbox-close');
+      const btnNext = document.getElementById('lightbox-next');
+      const btnPrev = document.getElementById('lightbox-prev');
+
+      const cards = Array.from(document.querySelectorAll('#best-sellers .card img'));
+      if(!cards.length) return;
+
+      // store srcs for navigation
+      const srcs = cards.map(img => img.getAttribute('src'));
+      let current = 0;
+
+      function openAt(index){
+        current = (index + srcs.length) % srcs.length;
+        lbImg.src = srcs[current];
+        lbImg.alt = cards[current].alt || '';
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        // focus for keyboard handling
+        btnClose.focus();
+      }
+
+      function close(){
+        lightbox.classList.remove('open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      cards.forEach((img, i)=>{
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', ()=> openAt(i));
+      });
+
+      btnClose.addEventListener('click', close);
+      btnNext.addEventListener('click', ()=> openAt(current+1));
+      btnPrev.addEventListener('click', ()=> openAt(current-1));
+
+      // close when clicking outside image
+      lightbox.addEventListener('click', (e)=>{
+        if(e.target === lightbox) close();
+      });
+
+      // keyboard support
+      document.addEventListener('keydown', (e)=>{
+        if(lightbox.classList.contains('open')){
+          if(e.key === 'Escape') close();
+          if(e.key === 'ArrowRight') openAt(current+1);
+          if(e.key === 'ArrowLeft') openAt(current-1);
+        }
+      });
+    })();
+    
+    // Generic carousel initializer for main and feature carousels
+    function initCarousel(container){
+      const track = container.querySelector('.track');
+      if(!track) return;
+      const slides = Array.from(track.children);
+      const nextButton = container.querySelector('.carousel-btn.next');
+      const prevButton = container.querySelector('.carousel-btn.prev');
+      const dotsNav = container.querySelector('.dots');
+      const dots = dotsNav ? Array.from(dotsNav.children) : [];
+      let currentIndex = 0;
+
+      function update(){
+        const slideWidth = slides[0].getBoundingClientRect().width || container.clientWidth;
+        track.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+        dots.forEach((d,i)=> d.classList.toggle('active', i===currentIndex));
+      }
+
+      if(nextButton) nextButton.addEventListener('click', ()=> { currentIndex = (currentIndex + 1) % slides.length; update(); });
+      if(prevButton) prevButton.addEventListener('click', ()=> { currentIndex = (currentIndex - 1 + slides.length) % slides.length; update(); });
+
+      if(dots.length){
+        dots.forEach((dot, i)=> dot.addEventListener('click', ()=> { currentIndex = i; update(); }));
+      }
+
+      // basic touch support
+      (function(){
+        let startX = 0, delta = 0;
+        track.addEventListener('touchstart', e=> startX = e.touches[0].clientX);
+        track.addEventListener('touchmove', e=> delta = e.touches[0].clientX - startX);
+        track.addEventListener('touchend', ()=>{
+          if(Math.abs(delta) > 40) currentIndex = delta < 0 ? currentIndex + 1 : currentIndex - 1;
+          currentIndex = (currentIndex + slides.length) % slides.length;
+          update();
+          delta = 0;
+        });
+      })();
+
+      window.addEventListener('resize', update);
+      update();
+    }
+
+    // initialize all carousels on the page (main gallery + feature carousels)
+    document.querySelectorAll('.carousel, .feature-carousel').forEach(c => initCarousel(c));
+  </script>
+</body>
+</html>
